@@ -12,7 +12,7 @@ import uniandes.edu.co.demo.modelo.Servicio;
 public interface ServicioRepository extends MongoRepository<Servicio, Integer> {
 
     // Consultar todos los servicios
-    @Query(value = "{}")
+    @Query(value = "{}", fields = "{ 'disponibilidad': 0 }")
     List<Servicio> buscarTodosLosServicios();
 
     // Consultar servicio por ID
