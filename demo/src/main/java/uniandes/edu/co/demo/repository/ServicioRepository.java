@@ -17,7 +17,7 @@ public interface ServicioRepository extends MongoRepository<Servicio, Integer> {
 
     // Consultar servicio por ID
     @Query("{'_id': ?0}")
-    Servicio buscarServicioPorId(int id);
+    List<Servicio> buscarServicioPorId(int id);
 
     // Insertar un nuevo servicio
     default void insertarServicio(Servicio servicio) {
@@ -27,7 +27,7 @@ public interface ServicioRepository extends MongoRepository<Servicio, Integer> {
     // Actualizar servicio
     @Query(value = "{'_id': ?0}")
     @Update("{ $set: { nombre: ?1, tipo_servicio: ?2, requiere_orden: ?3, nit_ips: ?4, disponibilidad: ?6 } }")
-    void actualizarServicio(int id, String nombre, String tipo_servicio, boolean requiere_orden, String nit_ips, List<String> disponibilidad);
+    void actualizarServicio(int id, String nombre, String tipo_servicio, boolean requiere_orden, String nit_ips, List<Disponibilidad> disponibilidad);
 
     // Eliminar servicio por ID
     @Query(value = "{'_id': ?0}", delete = true)
