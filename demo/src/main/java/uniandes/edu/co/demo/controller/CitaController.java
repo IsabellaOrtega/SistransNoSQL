@@ -1,6 +1,8 @@
 package uniandes.edu.co.demo.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Date; 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,10 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam; 
 
 import uniandes.edu.co.demo.modelo.Cita;
 import uniandes.edu.co.demo.modelo.IPS;
+import uniandes.edu.co.demo.modelo.ServicioMasSolicitado;
 import uniandes.edu.co.demo.repository.CitaRepository;
+import uniandes.edu.co.demo.repository.CitaRepositoryCustom;
 
 @RestController
 @RequestMapping("/citas")
@@ -82,4 +87,26 @@ public class CitaController {
             return new ResponseEntity<>("Error al eliminar la IPS: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Autowired
+    private CitaRepositoryCustom citaRepositorycustom;
+
+    @GetMapping("/top-servicios")
+    public ResponseEntity<List<ServicioMasSolicitado>> obtenerTopServicios(
+        @RequestParam("desde") String desdeStr,
+        @RequestParam("hasta") String hastaStr
+    ) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date desde = sdf.parse(desdeStr);
+            Date hasta = sdf.parse(hastaStr);
+
+            List<ServicioMasSolicitado> resultado = citaRepositorycustom.obtenerTopServiciosEntreFechas(desde, hasta);
+            return ResponseEntity.ok(resultado);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 }
