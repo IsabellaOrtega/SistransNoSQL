@@ -35,10 +35,10 @@ public class IPSController {
     }
 
     // Actualizar una IPS existente
-    @PostMapping("/{NIT}/edit/save")
-    public ResponseEntity<String> actualizarIps(@PathVariable("NIT") String NIT, @RequestBody IPS ips) {
+    @PostMapping("/{id}/edit/save")
+    public ResponseEntity<String> actualizarIps(@PathVariable("id") String id, @RequestBody IPS ips) {
         try {
-            ipsRepository.actualizarIPS(NIT, ips.getNombre(), ips.getDireccion(), ips.getTelefono());
+            ipsRepository.actualizarIPS(id, ips.getNombre(), ips.getDireccion(), ips.getTelefono());
             return new ResponseEntity<>("IPS actualizado exitosamente", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al actualizar la IPS: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -57,10 +57,10 @@ public class IPSController {
     }
 
     // Consultar IPS por NIT
-    @GetMapping("/{NIT}")
-    public ResponseEntity<List<IPS>> obtenerIPSPorNIT(@PathVariable("NIT") String NIT) {
+    @GetMapping("/{id}")
+    public ResponseEntity<List<IPS>> obtenerIPSPorNIT(@PathVariable("id") String id) {
         try {
-            List<IPS> ipsList = ipsRepository.BuscarIPSPorNIT(NIT);
+            List<IPS> ipsList = ipsRepository.BuscarIPSPorNIT(id);
             if (ipsList != null && !ipsList.isEmpty()) {
                 return ResponseEntity.ok(ipsList);
             }else {
@@ -72,10 +72,10 @@ public class IPSController {
     }
 
     //Eliminar IPS por NIT
-    @DeleteMapping("/{NIT}/delete")
-    public ResponseEntity<String> eliminarIps(@PathVariable("NIT") String NIT) {
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<String> eliminarIps(@PathVariable("id") String id) {
         try {
-            ipsRepository.eliminarIPSPorNIT(NIT);
+            ipsRepository.eliminarIPSPorNIT(id);
             return new ResponseEntity<>("IPS eliminado exitosamente", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al eliminar la IPS: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
