@@ -33,4 +33,6 @@ public interface CitaRepository extends MongoRepository<Cita, Integer> {
     @Query(value = "{'_id': ?0}", delete = true)
     void eliminarCitaPorId(int id);
     
+    @Query("{ 'id_servicio': ?0, 'fecha_hora': { $gte: ?1, $lte: ?2 } }")
+        List<Cita> buscarPorServicioYFecha(int idServicio, Date desde, Date hasta);
 }

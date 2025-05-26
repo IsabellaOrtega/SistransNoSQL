@@ -18,6 +18,9 @@ public class Servicio {
     private String nit_ips;
     private List<Disponibilidad> disponibilidad;
 
+    public Servicio() {
+    }
+
     public Servicio(int id, String nombre, String tipo_servicio, boolean requiere_orden, String nit_ips) {
         this.id = id;
         this.nombre = nombre;

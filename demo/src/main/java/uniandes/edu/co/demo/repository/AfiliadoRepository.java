@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.repository.Update;
 import uniandes.edu.co.demo.modelo.Afiliado;
 import uniandes.edu.co.demo.modelo.Parentesco;
 
-public interface AfiliadoRepository extends MongoRepository<Afiliado, Integer> {
+public interface AfiliadoRepository extends MongoRepository<Afiliado, String> {
 
     // Consultar todos los afiliados
     @Query(value = "{}", fields = "{ 'parentesco': 0 }")

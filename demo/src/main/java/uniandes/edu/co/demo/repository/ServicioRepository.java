@@ -36,5 +36,9 @@ public interface ServicioRepository extends MongoRepository<Servicio, Integer> {
     // Obtener disponibilidad de un servicio por ID
     @Query(value = "{'_id': ?0}", fields = "{ 'disponibilidad': 1 }")
     List<Disponibilidad> obtenerDisponibilidadPorServicio(int id);
+
+    @Query(value = "{'_id': ?0, 'disponibilidad': { $elemMatch: { estado: 'Disponible' } } }", fields = "{ 'disponibilidad.$': 1 }")
+    List<Servicio> findDisponibilidadDisponibleByServicioId(int id);
+ 
     
 }

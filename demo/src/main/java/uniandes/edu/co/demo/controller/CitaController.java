@@ -2,9 +2,12 @@ package uniandes.edu.co.demo.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.Calendar;
 import java.util.Date; 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,10 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam; 
 
 import uniandes.edu.co.demo.modelo.Cita;
+import uniandes.edu.co.demo.modelo.Disponibilidad;
 import uniandes.edu.co.demo.modelo.IPS;
+import uniandes.edu.co.demo.modelo.Servicio;
 import uniandes.edu.co.demo.modelo.ServicioMasSolicitado;
 import uniandes.edu.co.demo.repository.CitaRepository;
 import uniandes.edu.co.demo.repository.CitaRepositoryCustom;
+import uniandes.edu.co.demo.repository.ServicioRepository;
 
 @RestController
 @RequestMapping("/citas")
@@ -108,5 +114,58 @@ public class CitaController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    //consukar disponibilidad de un servicio en una fecha
+    @GetMapping("/disponibilidad/{id_servicio}")
+    public List<Cita> consultarDisponibilidad(@PathVariable int id_servicio) {
+    Date hoy = new Date();
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(hoy);
+    calendar.add(Calendar.WEEK_OF_YEAR, 4);
+    Date enCuatroSemanas = calendar.getTime();
+
+    return citaRepository.buscarPorServicioYFecha(id_servicio, hoy, enCuatroSemanas);
+    }
+
+    @Autowired
+    private ServicioRepository servicioRepository;
+
+
+    //diponibilidad libre
+    @GetMapping("/{id}/disponibilidad/disponible")
+public ResponseEntity<List<Disponibilidad>> obtenerDisponibilidadLibreDesdeFecha(
+    @PathVariable int id,
+    @RequestParam("fechaInicio") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio) {
+
+    List<Servicio> servicios = servicioRepository.findDisponibilidadDisponibleByServicioId(id);
+    if (servicios.isEmpty()) {
+        return ResponseEntity.notFound().build();
+    }
+
+    List<Disponibilidad> disponibles = servicios.get(0).getDisponibilidad();
+    if (disponibles == null || disponibles.isEmpty()) {
+        return ResponseEntity.noContent().build();
+    }
+
+    // Calcular fecha final (4 semanas después)
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(fechaInicio);
+    calendar.add(Calendar.WEEK_OF_YEAR, 4);
+    Date fechaFin = calendar.getTime();
+
+    // Filtrar disponibilidades en el rango
+    List<Disponibilidad> disponiblesEnRango = disponibles.stream()
+        .filter(d -> d.getHorario_inicio() != null &&
+                     !d.getHorario_inicio().before(fechaInicio) &&
+                     !d.getHorario_inicio().after(fechaFin))
+        .collect(Collectors.toList());
+
+    if (disponiblesEnRango.isEmpty()) {
+        return ResponseEntity.noContent().build();
+    }
+
+    return ResponseEntity.ok(disponiblesEnRango);
+}
+
 
 }
