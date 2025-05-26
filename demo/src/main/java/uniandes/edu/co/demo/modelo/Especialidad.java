@@ -6,6 +6,8 @@ import lombok.ToString;
 public class Especialidad {
     private String nombre;
 
+    public Especialidad() { }
+    
     public Especialidad(String nombre){
         this.nombre = nombre;
     }

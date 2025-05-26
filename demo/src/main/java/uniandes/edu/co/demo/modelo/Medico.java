@@ -11,12 +11,15 @@ import lombok.ToString;
 @ToString
 public class Medico {
     @Id
+    private String id;
     private int numero_registro_medico;
     private String nombres;
     private String apellidos;
     private String tipo_documento;
     private int numero_documento;
     private List<Especialidad> especialidad;
+
+    public Medico() {}
 
     public Medico(String nombres, String apellidos, String tipo_documento, int numero_documento, int numero_registro_medico){
         this.nombres=nombres;

@@ -8,13 +8,13 @@ import lombok.ToString;
 public class Disponibilidad {
     private Date horario_inicio;
     private Date horario_fin;
-    private String estado_cita;
+    private String estado;
     private boolean asistencia;
 
-    public Disponibilidad(Date horario_inicio, Date horario_fin, String estado_cita, boolean asistencia) {
+    public Disponibilidad(Date horario_inicio, Date horario_fin, String estado, boolean asistencia) {
         this.horario_inicio = horario_inicio;
         this.horario_fin = horario_fin;
-        this.estado_cita = estado_cita;
+        this.estado = estado;
         this.asistencia = asistencia;
     }
     public Date getHorario_inicio() {
@@ -30,10 +30,10 @@ public class Disponibilidad {
         this.horario_fin = horario_fin;
     }
     public String getEstado_cita() {
-        return estado_cita;
+        return estado;
     }
-    public void setEstado_cita(String estado_cita) {
-        this.estado_cita = estado_cita;
+    public void setEstado_cita(String estado) {
+        this.estado = estado;
     }
     public boolean isAsistencia() {
         return asistencia;
@@ -41,5 +41,5 @@ public class Disponibilidad {
     public void setAsistencia(boolean asistencia) {
         this.asistencia = asistencia;
     }
-    
+
 }
