@@ -254,13 +254,13 @@ db.createCollection("Cita")
   $jsonSchema: {
     bsonType: 'object',
     required: [
-      'id',
+      '_id',
       'id_servicio',
       'numero_documento_afiliado',
       'fecha_hora'
     ],
     properties: {
-      id: {
+      _id: {
         bsonType: 'int'
       },
       id_servicio: {
@@ -505,11 +505,25 @@ db["Afiliado"].insertMany([
 
 //Población Cita
 
-db["Cita"].insertOne(
-  {
-    id: 1,
+db["Cita"].insertMany([{
+    _id: 1,
     id_servicio: 1,
     numero_documento_afiliado: 123456789,
     fecha_hora: ISODate("2025-06-01T10:00:00Z"),
     id_orden_servicio: 6001
-  })
+  },
+{
+    _id: 2,
+    id_servicio: 2,
+    numero_documento_afiliado: 123456789,
+    fecha_hora: ISODate("2025-06-01T12:00:00Z"),
+    id_orden_servicio: 6002
+  },
+{
+    _id: 3,
+    id_servicio: 2,
+    numero_documento_afiliado: 123456789,
+    fecha_hora: ISODate("2025-06-02T12:00:00Z"),
+    id_orden_servicio: 6001
+  }
+])
