@@ -18,7 +18,7 @@ import uniandes.edu.co.demo.modelo.Servicio;
 import uniandes.edu.co.demo.repository.ServicioRepository;
 
 @RestController
-@RequestMapping("/servicio")
+@RequestMapping("/servicios")
 public class ServicioController {
     
     @Autowired
@@ -91,5 +91,5 @@ public class ServicioController {
     }
 
     //@Autowired
-    //falta hacer la parte embebida
+    //falta hacer la parte de consultas
 }

@@ -1,5 +1,6 @@
 package uniandes.edu.co.demo.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -22,11 +23,11 @@ public interface OrdenServicioRepository extends MongoRepository<OrdenServicio, 
 
         @Query(value = "{'_id': ?0}")
         @Update("{ $set: { fecha: ?1, estado: ?2, id_servicio: ?3, numero_documento_afiliado: ?4, numero_registro_medico: ?5 } }")
-        void actualizarOrden(int id, String fecha, String estado, int id_servicio, int numero_documento_afiliado, int numero_registro_medico);
+        void actualizarOrden(int id, Date fecha, String estado, int id_servicio, int numero_documento_afiliado, int numero_registro_medico);
 
         @Query(value = "{'_id': ?0}", delete = true)
         void eliminarOrdenPorId(int id);
 
-        
+
 
 }
