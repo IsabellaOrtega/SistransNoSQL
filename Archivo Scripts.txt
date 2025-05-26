@@ -1,0 +1,515 @@
+//CREACIÓN DE COLECCIONES --------------------------------------------------------------
+db.createCollection("IPS")
+db.createCollection("Servicio")
+db.createCollection("OrdenServicio")
+db.createCollection("Medico")
+db.createCollection("Afiliado")
+db.createCollection("Cita")
+
+//ESQUEMAS DE VALIDACIÓN ---------------------------------------------------------------
+
+//IPS
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      'NIT',
+      'nombre',
+      'direccion',
+      'telefono'
+    ],
+    properties: {
+      NIT: {
+        bsonType: 'string'
+      },
+      nombre: {
+        bsonType: 'string'
+      },
+      direccion: {
+        bsonType: 'string'
+      },
+      telefono: {
+        bsonType: 'string'
+      }
+    }
+  }
+}
+
+//Servicio
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      '_id',
+      'nombre',
+      'tipo_servicio',
+      'requiere_orden',
+      'nit_ips'
+    ],
+    properties: {
+      _id: {
+        bsonType: 'int'
+      },
+      nombre: {
+        bsonType: 'string'
+      },
+      tipo_servicio: {
+        bsonType: 'string'
+      },
+      requiere_orden: {
+        bsonType: 'bool'
+      },
+      nit_ips: {
+        bsonType: 'string'
+      },
+      disponibilidad: {
+        bsonType: 'array',
+        items: {
+          bsonType: 'object',
+          required: [
+            'horario_inicio',
+            'horario_fin',
+            'estado',
+            'asistencia'
+          ],
+          properties: {
+            horario_inicio: {
+              bsonType: 'date'
+            },
+            horario_fin: {
+              bsonType: 'date'
+            },
+            estado: {
+              bsonType: 'string',
+              'enum': [
+                'Disponible',
+                'Ocupado'
+              ]
+            },
+            asistencia: {
+              bsonType: 'bool'
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+//OrdenServicio
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      '_id',
+      'fecha',
+      'estado',
+      'id_servicio',
+      'numero_documento_afiliado',
+      'numero_registro_medico'
+    ],
+    properties: {
+      _id: {
+        bsonType: 'int'
+      },
+      fecha: {
+        bsonType: 'date'
+      },
+      estado: {
+        bsonType: 'string'
+      },
+      id_servicio: {
+        bsonType: 'int'
+      },
+      numero_documento_afiliado: {
+        bsonType: 'int'
+      },
+      numero_registro_medico: {
+        bsonType: 'int'
+      }
+    }
+  }
+}
+
+//Medico
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      'nombres',
+      'apellidos',
+      'tipo_documento',
+      'numero_documento',
+      'numero_registro_medico'
+    ],
+    properties: {
+      nombres: {
+        bsonType: 'string'
+      },
+      apellidos: {
+        bsonType: 'string'
+      },
+      tipo_documento: {
+        bsonType: 'string',
+        'enum': [
+          'CC',
+          'TI',
+          'PASAPORTE',
+          'CE'
+        ]
+      },
+      numero_documento: {
+        bsonType: 'int'
+      },
+      numero_registro_medico: {
+        bsonType: 'int'
+      },
+      especialidad: {
+        bsonType: 'array',
+        items: {
+          bsonType: 'object',
+          required: [
+            'nombre'
+          ],
+          properties: {
+            nombre: {
+              bsonType: 'string'
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+//Afiliado
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      'tipo_documento',
+      'numero_documento',
+      'nombres',
+      'apellidos',
+      'fecha_nacimiento',
+      'direccion',
+      'telefono'
+    ],
+    properties: {
+      tipo_documento: {
+        bsonType: 'string',
+        'enum': [
+          'CC',
+          'TI',
+          'PASAPORTE',
+          'CE'
+        ]
+      },
+      numero_documento: {
+        bsonType: 'int'
+      },
+      nombres: {
+        bsonType: 'string'
+      },
+      apellidos: {
+        bsonType: 'string'
+      },
+      fecha_nacimiento: {
+        bsonType: 'date'
+      },
+      direccion: {
+        bsonType: 'string'
+      },
+      telefono: {
+        bsonType: 'string'
+      },
+      tipo_afiliado: {
+        bsonType: 'string'
+      },
+      parentesco: {
+        bsonType: 'array',
+        items: {
+          bsonType: 'object',
+          required: [
+            'nombre_parentesco',
+            'documento_contribuyente'
+          ],
+          properties: {
+            nombre_parentesco: {
+              bsonType: 'string'
+            },
+            documento_contribuyente: {
+              bsonType: 'int'
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+//Cita
+
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      'id',
+      'id_servicio',
+      'numero_documento_afiliado',
+      'fecha_hora'
+    ],
+    properties: {
+      id: {
+        bsonType: 'int'
+      },
+      id_servicio: {
+        bsonType: 'int'
+      },
+      numero_documento_afiliado: {
+        bsonType: 'int'
+      },
+      fecha_hora: {
+        bsonType: 'date'
+      },
+      id_orden_servicio: {
+        bsonType: [
+          'int',
+          'null'
+        ]
+      }
+    }
+  }
+}
+
+
+//POBLACIONES -------------------------------------------------------------------------
+
+//Población de IPS
+
+db["IPS"].insertOne({
+  _id: "1001",
+	NIT: "1001",
+  nombre: "IPS San José",
+  direccion: "calle 1 #2-3",
+  telefono: "1234567890"
+})
+
+db["IPS"].insertMany([
+  {
+	_id: "1002",
+	NIT: "1002",
+  nombre: "IPS La Esperanza",
+  direccion: "Carrera 10 # 5-8",
+  telefono: "9876543210"
+},
+  {
+	_id: "1003",
+	NIT: "1003",
+  nombre: "IPS central",
+  direccion: "Avenida 3 # 10-20",
+  telefono: "5556667777"
+}])
+
+//Población de Servicio
+
+db["Servicio"].insertMany([
+  {
+_id: 1,
+    nombre: "Consulta General",
+    tipo_servicio: "Medicina General",
+    requiere_orden: false,
+    nit_ips: "1001",
+    disponibilidad: [
+      {
+        horario_inicio: ISODate("2024-06-01T09:00:00Z"),
+        horario_fin: ISODate("2024-06-01T10:00:00Z"),
+        estado: "Disponible",
+        asistencia: false
+      },
+      {
+        horario_inicio: ISODate("2024-06-03T14:00:00Z"),
+        horario_fin: ISODate("2024-06-03T15:00:00Z"),
+        estado: "Ocupado",
+        asistencia: true
+      }
+    ]
+},
+  {
+_id: 3,
+    nombre: "Examen de Laboratorio",
+    tipo_servicio: "Examen",
+    requiere_orden: true,
+    nit_ips: "1003",
+    disponibilidad: [
+      {
+        horario_inicio: ISODate("2024-06-05T07:00:00Z"),
+        horario_fin: ISODate("2024-06-05T08:00:00Z"),
+        estado: "Disponible",
+        asistencia: false
+      }
+    ]
+  },
+{
+_id: 2,
+nombre: "Consulta Especializada",
+tipo_servicio: "Cardiología",
+requiere_orden: true,
+nit_ips: "1002",
+disponibilidad: [
+      {
+        horario_inicio: ISODate("2024-06-06T07:00:00Z"),
+        horario_fin: ISODate("2024-06-06T08:00:00Z"),
+        estado: "Disponible",
+        asistencia: false
+      },
+	{
+        horario_inicio: ISODate("2024-06-05T09:00:00Z"),
+        horario_fin: ISODate("2024-06-05T10:00:00Z"),
+        estado: "Disponible",
+        asistencia: false
+      }
+    ]
+},
+{
+_id: 4,
+    nombre: "Consulta pediátrica",
+    tipo_servicio: "Pediatría",
+    requiere_orden: true,
+    nit_ips: "1001",
+    disponibilidad: [
+      {
+        horario_inicio: ISODate("2024-06-08T15:00:00Z"),
+        horario_fin: ISODate("2024-06-08T16:00:00Z"),
+        estado: "Disponible",
+        asistencia: false
+      },
+	{
+        horario_inicio: ISODate("2024-08-08T15:00:00Z"),
+        horario_fin: ISODate("2024-08-08T16:00:00Z"),
+        estado: "Disponible",
+        asistencia: false
+      }
+    ]
+
+}
+
+])
+
+//Población de Orden de Servicio
+
+db["OrdenServicio"].insertMany([
+  {
+    _id: 6001,
+    fecha: ISODate("2024-06-03T09:00:00Z"),
+    estado: "Vigente",
+    id_servicio: 1,
+    numero_documento_afiliado: 123456789,
+    numero_registro_medico: 5001
+  },
+  {
+    _id: 6002,
+    fecha: ISODate("2024-05-15T14:30:00Z"),
+    estado: "Completada",
+    id_servicio: 2,
+    numero_documento_afiliado: 987654321,
+    numero_registro_medico: 5002
+  },
+  {
+    _id: 6003,
+    fecha: ISODate("2024-05-25T11:00:00Z"),
+    estado: "Cancelada",
+    id_servicio: 3,
+    numero_documento_afiliado: 112233445,
+    numero_registro_medico: 5003
+  }
+])
+
+//Población de Medico
+
+db["Medico"].insertMany([
+  {
+    nombres: "Andrea",
+    apellidos: "Martínez",
+    tipo_documento: "CC",
+    numero_documento: 123456779,
+    numero_registro_medico: 5001,
+    especialidad: [
+      { nombre: "Pediatría" },
+      { nombre: "Urgencias" }
+    ]
+  },
+  {
+    nombres: "Luis",
+    apellidos: "Rodríguez",
+    tipo_documento: "TI",
+    numero_documento: 234567890,
+    numero_registro_medico: 5002,
+    especialidad: [
+      { nombre: "Cardiología" }
+    ]
+  },
+  {
+    nombres: "Valeria",
+    apellidos: "Pérez",
+    tipo_documento: "PASAPORTE",
+    numero_documento: 345678901,
+    numero_registro_medico: 5003,
+    especialidad: []
+  }
+])
+
+//Población de Afiliado
+
+db["Afiliado"].insertMany([
+  {
+    tipo_documento: "CC",
+    numero_documento: 123456789,
+    nombres: "Carlos",
+    apellidos: "Gómez",
+    fecha_nacimiento: ISODate("1990-05-10T00:00:00Z"),
+    direccion: "Calle 45 #23-11",
+    telefono: "3015551111",
+    tipo_afiliado: "contribuyente"
+  },
+  {
+    tipo_documento: "TI",
+    numero_documento: 987654321,
+    nombres: "Valentina",
+    apellidos: "López",
+    fecha_nacimiento: ISODate("2005-10-22T00:00:00Z"),
+    direccion: "Carrera 15 #78-40",
+    telefono: "3107773333",
+    tipo_afiliado: "Beneficiario",
+    parentesco: [
+      { nombre_parentesco: "Hija",
+				documento_contribuyente: 123456789 }
+    ]
+  },
+  {
+    tipo_documento: "PASAPORTE",
+    numero_documento: 112233445,
+    nombres: "Laura",
+    apellidos: "Martínez",
+    fecha_nacimiento: ISODate("1985-03-18T00:00:00Z"),
+    direccion: "Av. 68 #90-12",
+    telefono: "3158889999",
+    tipo_afiliado: "Beneficiario",
+    parentesco: [
+      { nombre_parentesco: "Esposa",
+				documento_contribuyente: 123456789 }
+    ]
+  }
+])
+
+
+//Población Cita
+
+db["Cita"].insertOne(
+  {
+    id: 1,
+    id_servicio: 1,
+    numero_documento_afiliado: 123456789,
+    fecha_hora: ISODate("2025-06-01T10:00:00Z"),
+    id_orden_servicio: 6001
+  })
