@@ -15,13 +15,15 @@ public class OrdenServicio {
     private Date fecha;
     private String estado;
 
+    private int id_servicio;
     private int numero_documento_afiliado;
     private int numero_registro_medico;
 
-    public OrdenServicio(int id, Date fecha, String estado, int numero_documento_afiliado, int numero_registro_medico){
+    public OrdenServicio(int id, Date fecha, String estado, int id_servicio, int numero_documento_afiliado, int numero_registro_medico){
         this.id= id;
         this.fecha=fecha;
         this.estado=estado;
+        this.id_servicio=id_servicio;
         this.numero_documento_afiliado=numero_documento_afiliado;
         this.numero_registro_medico=numero_registro_medico;
     }
@@ -48,6 +50,13 @@ public class OrdenServicio {
 
     public void setEstado(String estado){
         this.estado=estado;
+    }
+    
+    public int getId_servicio(){
+        return id_servicio;
+    }
+    public void setId_servicio(int id_servicio){
+        this.id_servicio=id_servicio;
     }
 
     public int getNumero_documento_afiliado(){

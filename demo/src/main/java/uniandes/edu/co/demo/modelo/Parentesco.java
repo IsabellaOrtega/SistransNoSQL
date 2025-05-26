@@ -24,7 +24,7 @@ public class Parentesco {
         return documento_contribuyente;
     }
     
-    public void setDocumento_contribuyente(int docuemnto_contribuyente){
-        this.documento_contribuyente=docuemnto_contribuyente;
+    public void setDocumento_contribuyente(int documento_contribuyente){
+        this.documento_contribuyente=documento_contribuyente;
     }
 }
