@@ -17,7 +17,7 @@ public interface MedicoRepository extends MongoRepository<Medico, Integer> {
 
     // Consultar médico por documento
     @Query("{'documento': ?0}")
-    Medico buscarMedicoPorDocumento(int documento);
+    List<Medico> buscarMedicoPorDocumento(int documento);
 
     // Insertar un nuevo médico
     default void insertarMedico(Medico medico) {
@@ -27,7 +27,7 @@ public interface MedicoRepository extends MongoRepository<Medico, Integer> {
     // Actualizar médico
     @Query(value = "{'documento': ?0}")
     @Update("{ $set: { nombre: ?1, apellidos: ?2, tipo_documento: ?3, numero_documento: ?4, especialidad: ?5 } }")
-    void actualizarMedico(int numero_registro_medico, String nombre, String apellidos, String tipo_documento, int numero_documento, List<String> especialidad);
+    void actualizarMedico(int numero_registro_medico, String nombre, String apellidos, String tipo_documento, int numero_documento, List<Especialidad> especialidad);
 
     // Eliminar médico por documento
     @Query(value = "{'documento': ?0}", delete = true)
