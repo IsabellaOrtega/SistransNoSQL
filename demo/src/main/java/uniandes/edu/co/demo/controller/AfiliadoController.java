@@ -24,7 +24,7 @@ public class AfiliadoController {
     @PostMapping("/new/save")
     public ResponseEntity<String> crearAfiliado(@RequestBody Afiliado afiliado) {
         try {
-            AfiliadoRepository.save(afiliado);
+            afiliadoRepository.save(afiliado);
             return new ResponseEntity<>("Afiliado creado exitosamente", HttpStatus.CREATED);
         } catch (Exception e) {;
             return new ResponseEntity<>("Error al crear el afiliado: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -35,13 +35,13 @@ public class AfiliadoController {
     @PostMapping("/{numero_documento}/edit/save")
     public ResponseEntity<String> actualizarAfiliado(@PathVariable("numero_documento") int numero_documento, @RequestBody Afiliado afiliado) {
         try {
-            AfiliadoRepository.actualizarAfiliado(
-                _id,
-                afiliado.getNumero_documento(),
+            afiliadoRepository.actualizarAfiliado(
+                numero_documento,
+                
                 afiliado.getTipo_documento(),
                 afiliado.getNombres(),
                 afiliado.getApellidos(),
-                afiliado.getFecha_nacimiento(),
+                afiliado.getFecha_nacimiento() != null ? afiliado.getFecha_nacimiento().toString() : null,
                 afiliado.getDireccion(),
                 afiliado.getTelefono(),
                 afiliado.getTipo_afiliado(),
@@ -68,7 +68,7 @@ public class AfiliadoController {
     @GetMapping("/{numero_documento}")
     public ResponseEntity<List<Afiliado>> obtenerAfiliadoPorNumeroDocumento(@PathVariable("numero_documento") int numero_documento) {
         try {
-            List<Afiliado> afiliados = afiliadoRepository.buscarPorId(id);
+            List<Afiliado> afiliados = afiliadoRepository.buscarAfiliadoPorNumeroDocumento(numero_documento);
             if (afiliados != null && !afiliados.isEmpty()) {
                 return ResponseEntity.ok(afiliados);
             } else {
@@ -90,8 +90,8 @@ public class AfiliadoController {
         }
     }
 
-    @Autowired
-    private BarRepositoryCustom barRepositoryCustom;
+   // @Autowired
+   // private BarRepositoryCustom barRepositoryCustom;
 
     // Obtener las bebidas más consumidas
     //@GetMapping("/mas-consumidas")
@@ -109,17 +109,5 @@ public class AfiliadoController {
   // }
 
     // Obtener el parentesco de un afiliado por su número de documento
-    @GetMapping("/{numero_documento}/parentesco")
-    public ResponseEntity<List<Parentesco>> obtenerParentescoPorNumeroDocumento(@PathVariable("numero_documento") int numero_documento) {
-        try {
-            List<Parentesco> parentescos = afiliadoRepository.buscarParentescoPorNumeroDocumento(numero_documento);
-            if (parentescos != null && !parentescos.isEmpty()) {
-                return ResponseEntity.ok(parentescos);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+    
 }
