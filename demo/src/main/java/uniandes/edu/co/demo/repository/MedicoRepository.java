@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.repository.Update;
 import uniandes.edu.co.demo.modelo.Especialidad;
 import uniandes.edu.co.demo.modelo.Medico;
 
-public interface MedicoRepository extends MongoRepository<Medico, Integer> {
+public interface MedicoRepository extends MongoRepository<Medico, String> {
 
     // Consultar todos los médicos
     @Query(value = "{}", fields = "{ 'especialidad': 0 }")
