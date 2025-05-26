@@ -1,4 +1,5 @@
-package main.java.uniandes.edu.co.demo.controller;
+package uniandes.edu.co.demo.controller;
+
 
 import java.util.List;
 
