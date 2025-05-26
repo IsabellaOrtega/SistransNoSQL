@@ -12,6 +12,7 @@ import lombok.ToString;
 @ToString
 public class Afiliado {
     @Id
+    private String id;
     private int numero_documento;
     private String tipo_documento;
     private String nombres;
